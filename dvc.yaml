@@ -5,3 +5,6 @@ stages:
   data_preprocessing:
     cmd: datasets/stage1/train.csv scripts/data_preprocessing.py datasets/stage2 scripts/data_prepocessing.py
       datasets/stage2/train.csv
+  data_split:
+    cmd: datasets/stage2/train.csv scripts/split.py datasets/stage3 scripts/split.py
+      datasets/stage3/train.csv

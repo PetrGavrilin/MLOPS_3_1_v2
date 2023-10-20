@@ -1,4 +1,4 @@
-Added stage 'data_preprocessing' in 'dvc.yaml'
+Added stage 'data_split' in 'dvc.yaml'
 
 To track the changes with git, run:
 
