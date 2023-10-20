@@ -1,0 +1,7 @@
+stages:
+  get-features:
+    cmd: Twitter_volume_AMZN.csv scripts/get_features.py datasets/stage1 scripts/get_features.py
+      Twitter_volume_AMZN.csv
+  data_preprocessing:
+    cmd: datasets/stage1/train.csv scripts/data_preprocessing.py datasets/stage2 scripts/data_prepocessing.py
+      datasets/stage2/train.csv
