@@ -8,7 +8,7 @@ from sktime.forecasting.base import ForecastingHorizon
 import pickle
 import json
 
-if len(sys.argv) != 2:
+if len(sys.argv) != 3:
     sys.stderr.write("Ошибка в аргументах. Пример выполнения:\n")
     sys.stderr.write("python get_features.py data_file\n")
     sys.exit(1)
