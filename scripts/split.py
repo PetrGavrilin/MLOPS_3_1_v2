@@ -19,7 +19,7 @@ os.makedirs(os.path.join("datasets","stage3"), exist_ok=True)
 f_output_test = os.path.join("datasets", "stage3", "test.csv")
 #os.makedirs(os.path.join("datasets","stage3"), exist_ok=True)
 
-TEST_SIZE = int(params*y.size)
+TEST_SIZE = int(params["split_ratio"]*y.size)
 
 y = pd.read_csv(f_input, index_col='timestamp', parse_dates=True)
 
