@@ -1,0 +1,89 @@
+schema: '2.0'
+stages:
+  get-features:
+    cmd: python3 scripts/get_features.py  Twitter_volume_AMZN.csv
+    deps:
+    - path: Twitter_volume_AMZN.csv
+      hash: md5
+      md5: 67d02ba74a5edea23042538536babf67
+      size: 364666
+    - path: scripts/get_features.py
+      hash: md5
+      md5: 15b3fb56ae3b29add9d0921cdb372cff
+      size: 658
+    outs:
+    - path: datasets/stage1
+      hash: md5
+      md5: da0ab3c22290a91b47c1a278c4ef7cea.dir
+      size: 364666
+      nfiles: 1
+  data_preprocessing:
+    cmd: python3 scripts/data_preprocessing.py  datasets/stage1/train.csv
+    deps:
+    - path: datasets/stage1/train.csv
+      hash: md5
+      md5: 67d02ba74a5edea23042538536babf67
+      size: 364666
+    - path: scripts/data_preprocessing.py
+      hash: md5
+      md5: d8a61ae18b4d5cc48333e6d070b3fdc5
+      size: 755
+    outs:
+    - path: datasets/stage2
+      hash: md5
+      md5: 74e8c8e008cc57068bf2ed62819f9a72.dir
+      size: 31771
+      nfiles: 1
+  data_split:
+    cmd: python3 scripts/split.py datasets/stage2/train.csv
+    deps:
+    - path: datasets/stage2/train.csv
+      hash: md5
+      md5: fbe973d3eb08f0ecf3c0e680d7023d28
+      size: 31771
+    - path: scripts/split.py
+      hash: md5
+      md5: 860dc83793d96360a0088ce248439424
+      size: 902
+    outs:
+    - path: datasets/stage3
+      hash: md5
+      md5: 875d432b25aa1be55928a6d1dbb44bfa.dir
+      size: 31787
+      nfiles: 2
+  train:
+    cmd: python3 scripts/model.py datasets/stage3/train.csv
+    deps:
+    - path: datasets/stage3/train.csv
+      hash: md5
+      md5: 6283bf511e68d5d82893ce85ac33b194
+      size: 22249
+    - path: scripts/model.py
+      hash: md5
+      md5: fd290973e72ab922fc8fb64c50143181
+      size: 807
+    outs:
+    - path: model/model.pkl
+      hash: md5
+      md5: 15dbd16942d5c157ad1a4d5fea9fae43
+      size: 23561
+  evaluate:
+    cmd: python3 scripts/evaluate.py datasets/stage3/test.csv model/model.pkl
+    deps:
+    - path: datasets/stage3/test.csv
+      hash: md5
+      md5: 713f78b831588069bdf961efa829d7ba
+      size: 9538
+    - path: model/model.pkl
+      hash: md5
+      md5: 15dbd16942d5c157ad1a4d5fea9fae43
+      size: 23561
+    - path: scripts/evaluate.py
+      hash: md5
+      md5: a50a8ae518248bc50b5a4ba93b22e31c
+      size: 917
+    outs:
+    - path: evaluate/score.json
+      hash: md5
+      md5: 8aa5051014bc4b1d525745f29256a1c7
+      size: 29
