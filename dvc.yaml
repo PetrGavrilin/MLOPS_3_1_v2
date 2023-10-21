@@ -1,16 +1,37 @@
 stages:
   get-features:
-    cmd: Twitter_volume_AMZN.csv scripts/get_features.py datasets/stage1 scripts/get_features.py
-      Twitter_volume_AMZN.csv
+    cmd: Twitter_volume_AMZN.csv scripts/get_features.py datasets/stage1
+    deps:
+    - scripts/get_features.py
+    outs:
+    - datasets/stage1
   data_preprocessing:
-    cmd: datasets/stage1/train.csv scripts/data_preprocessing.py datasets/stage2 scripts/data_prepocessing.py
-      datasets/stage2/train.csv
+    cmd: datasets/stage1/train.csv scripts/data_preprocessing.py
+    deps:
+    - datasets/stage1 
+    - scripts/data_prepocessing.py
+    outs:
+    - datasets/stage2/train.csv
   data_split:
-    cmd: datasets/stage2/train.csv scripts/split.py datasets/stage3 scripts/split.py
-      datasets/stage3/train.csv
+    cmd: datasets/stage2/train.csv scripts/split.py 
+    deps:
+    - datasets/stage2 
+    - scripts/split.py
+    outs:
+    - datasets/stage3/train.csv
   train:
-    cmd: datasets/stage3/train.csv scripts/model.py datasets/stage3 scripts/model.py
-      datasets/stage3/train.csv model.pkl
+    cmd: datasets/stage3/train.csv scripts/model.py 
+    deps:
+    - datasets/stage3 
+    - scripts/model.py
+    outs:
+    - model.pkl
+    - datasets/stage3/train.csv
   evaluate:
-    cmd: datasets/stage3/test.csv scripts/evaluate.py -d /model.pkl " -M" /score.json
-      scripts/evaluate.py datasets/stage3/test.csv /model.pkl
+    cmd: datasets/stage3/test.csv scripts/evaluate.py
+    deps: 
+    - model.pkl
+    - datasets/stage2/test.csv
+    - scripts/evaluate.py
+    outs:
+    - score.json

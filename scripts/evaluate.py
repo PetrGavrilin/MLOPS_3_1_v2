@@ -2,8 +2,9 @@ import sys
 import os
 
 import pandas as pd
-from sktime.forecasting.naive import NaiveForecaster
-from sktime.forecasting.base import ForecastingHorizon
+
+from sktime.performance_metrics.forecasting import MeanAbsolutePercentageError
+
 
 import pickle
 import json
@@ -16,13 +17,17 @@ if len(sys.argv) != 2:
 f_input = sys.argv[1]
 f_output = os.path.join("models", sys.argv[2])
 
-df = pd.read_csv(sys.argv[1])
+df = pd.read_csv(sys.argv[1], , index_col='timestamp', parse_dates=True)
 y_test = df.value
+
+mape = MeanAbsolutePercentageError(symmetric=False)
 
 with open(sys.argv[2], "rb") as fd:
     model = pickle.load(fd)
 
-y_pred = forecaster.predict(y_test)
+y_pred = model.predict(y_test)
+
+score = mape(y_test, y_pred)
 
 prc_file = "evaluate.json"
 
