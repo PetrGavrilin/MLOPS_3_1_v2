@@ -1,38 +1,37 @@
 stages:
   get-features:
-    cmd: python3 Twitter_volume_AMZN.csv scripts/get_features.py datasets/stage1
+    cmd: python3 scripts/get_features.py  Twitter_volume_AMZN.csv
     deps:
     - Twitter_volume_AMZN.csv
     - scripts/get_features.py
     outs:
     - datasets/stage1
   data_preprocessing:
-    cmd: python3 datasets/stage1/train.csv scripts/data_preprocessing.py
+    cmd: python3 scripts/datapreprocessing.py  datasets/stage1/train.csv
     deps:
     - datasets/stage1/train.csv 
     - scripts/data_prepocessing.py
     outs:
     - datasets/stage2
   data_split:
-    cmd: python3 datasets/stage2/train.csv scripts/split.py 
+    cmd: python3 scripts/split.py datasets/stage2/train.csv  
     deps:
     - datasets/stage2/train.csv 
     - scripts/split.py
     outs:
     - datasets/stage3
   train:
-    cmd: python3 datasets/stage3/train.csv scripts/model.py 
+    cmd: python3 scripts/model.py datasets/stage3/train.csv 
     deps:
     - datasets/stage3/train.csv 
     - scripts/model.py
     outs:
     - model/model.pkl
   evaluate:
-    cmd: python3 datasets/stage3/test.csv scripts/evaluate.py model.pkl
+    cmd: python3 scripts/evaluate.py datasets/stage3/test.csv model.pkl
     deps: 
     - model/model.pkl
     - datasets/stage2/test.csv
     - scripts/evaluate.py
     outs:
-    - evaluate/score.json:
-        cash: false
+    - evaluate/score.json
